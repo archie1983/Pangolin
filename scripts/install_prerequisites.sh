@@ -117,7 +117,7 @@ if ((VERBOSE > 0)); then echo "Using \"$MANAGER\" package manager (select anothe
 if [[ "$MANAGER" == "apt" ]]; then
     SUDO="sudo"
     PKGS_UPDATE="apt update"
-    PKGS_OPTIONS+=(install --no-install-suggests --no-install-recommends)
+    PKGS_OPTIONS+=(-y install --no-install-suggests --no-install-recommends)
     if ((DRYRUN > 0));  then PKGS_OPTIONS+=(--dry-run); SUDO=""; fi
     PKGS_REQUIRED+=(libgl1-mesa-dev libwayland-dev libxkbcommon-dev wayland-protocols libegl1-mesa-dev)
     PKGS_REQUIRED+=(libc++-dev libglew-dev libeigen3-dev cmake g++ ninja-build)
@@ -164,6 +164,8 @@ else
     echo "Error: Don't know how to use \"$MANAGER\", please fix the script." >&2
     exit 1
 fi
+
+SUDO="" # AE: removing sudo call on my Jetson system
 
 if ((REQUIRED_RECOMMENDED_ALL < 2)); then PKGS_ALL=(); fi
 if ((REQUIRED_RECOMMENDED_ALL < 1)); then PKGS_RECOMMENDED=(); fi
